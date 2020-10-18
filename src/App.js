@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './styles.css';
 import PlayerPage from './PlayerPage'
+import PlayerID from './PlayerID'
 
 
 class App extends Component {
@@ -10,7 +11,10 @@ class App extends Component {
       input: '',
       submitted: false
     }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
+    
 
   handleChange(id){
     this.setState({
@@ -20,7 +24,6 @@ class App extends Component {
   }
 
   handleClick(){
-    console.log(this.state.input)
     this.setState({
       ...this.state,
       submitted: true
@@ -30,10 +33,7 @@ class App extends Component {
   render(){
     if(this.state.submitted === false){
       return(
-        <div>
-          <input type="text" className="user-input" onChange={(e) => this.handleChange(e.target.value) }></input>
-          <button onClick={() =>this.handleClick()} className="submit-button">Submit</button>
-        </div>
+        <PlayerID change={this.handleChange} click={this.handleClick}/>
       )
     }else{
       return(
