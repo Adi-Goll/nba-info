@@ -45,6 +45,9 @@ func GetPlayer(w http.ResponseWriter, r *http.Request) {
 	// Set response header
 	w.Header().Set("Content-Type", "application/json")
 
+	// Enable cors
+	enableCors(&w)
+
 	// Grab id from req params
 	searchId, _ := r.URL.Query()["id"]
 	id := strings.Join(searchId, "")
@@ -84,3 +87,7 @@ func GetPlayer(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(player)
 }
 
+// Enable cors
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}

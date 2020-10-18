@@ -9,7 +9,8 @@ class App extends Component {
     super(props)
     this.state = {
       input: '',
-      submitted: false
+      submitted: false,
+      player: {}
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -24,10 +25,15 @@ class App extends Component {
   }
 
   handleClick(){
-    this.setState({
-      ...this.state,
-      submitted: true
-    })
+    fetch(`http://localhost:5000/?id=${this.state.input}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          ...this.state,
+          submitted: true,
+          player: data
+        })
+      })
   }
 
   render(){
@@ -37,7 +43,7 @@ class App extends Component {
       )
     }else{
       return(
-        <PlayerPage />
+        <PlayerPage player={this.state.player} />
       )
     }
     
