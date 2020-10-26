@@ -4,10 +4,8 @@ const PORT = process.env.PORT || 5000;
 const axios = require('axios');
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
-const id = 193;
-
 const addQuery = (req, res, next) => {
-  req.query.id = `id`;
+  id = req.query.id;
   next();
 };
 
@@ -19,18 +17,19 @@ let returnObj = {
 };
 
 function GetPlayer(req, res) {
-  // id = req.param('id');
-  res.json(returnObj);
-  console.log(req.params.id);
-}
+  axios({
+    method: 'get',
+    url: `http://api.isportsapi.com/sport/basketball/player?api_key=5Wg8xgsxftGDBBZ6&playerId=${id}`,
+    responseType: 'application/json',
+  })
+    .then(function (response) {
+      let result = response.data;
+      returnObj.name = result.data[0].name;
+      returnObj.jerseyNumber = result.data[0].number;
+    })
+    .catch(function (error) {
+      console.log('error');
+    });
 
-axios({
-  method: 'get',
-  url: `http://api.isportsapi.com/sport/basketball/player?api_key=5Wg8xgsxftGDBBZ6&`,
-  responseType: 'application/json',
-}).then(function (response) {
-  result = response.data;
-  player = result.data;
-  returnObj.name = result.data[0].name;
-  returnObj.jerseyNumber = result.data[0].number;
-});
+  res.json(returnObj);
+}
